@@ -85,7 +85,7 @@ void GameScreenView::setupScreen() {
 	GameScreenViewBase::setupScreen();
 	backgroundImage.setVisible(true); // ✅ Cho hiện background từ đầu
 		backgroundImage.invalidate();     // ✅ Vẽ lại nền
-
+		bringUIElementsToFront();
 	// Kết thúc task game trước khi bắt đầu màn hình game mới (đảm bảo không có task game nào đang chạy)
 	osThreadTerminate(gameTaskHandle);
 	osMessageQueueReset(Queue5Handle);

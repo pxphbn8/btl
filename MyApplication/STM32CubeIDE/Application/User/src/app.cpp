@@ -24,7 +24,7 @@ int spawnSeed = 0;
 int currentRound = 1;
 bool isRoundTransition = false;
 int enemyBulletSpeed = 5;
-const int ENEMY_BULLET_SPEED_MAX = 12;
+const int ENEMY_BULLET_SPEED_MAX = 100;
 
 volatile bool isGameTaskTerminated = false;
 

@@ -18,11 +18,9 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-
 #include "main.h"
 #include "cmsis_os.h"
 #include "app_touchgfx.h"
-extern uint8_t enemyBulletSpeed;
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -1139,58 +1137,46 @@ void LCD_Delay(uint32_t Delay) {
  * @retval None
  */
 /* USER CODE END Header_StartDefaultTask */
-
-#define ENEMY_BULLET_SPEED_MAX 100
-#define JOYSTICK_X_CENTER 25
-#define JOYSTICK_Y_CENTER 50
-#define JOYSTICK_DEADZONE 10
-
 void StartDefaultTask(void *argument)
 {
-  uint8_t msg;
-  uint32_t x, y;
+  /* USER CODE BEGIN 5 */
+	/* Infinite loop */
+//	uint32_t count1, count2, count3, count4;
+//	uint8_t x1, x2, x3, x4;
+	uint8_t msg;
+	uint32_t x, y;
+	for (;;) {
+		x = ReadJoystickX();
+		y = ReadJoystickY();
 
-  for (;;) {
-    // Đọc joystick
-    x = ReadJoystickX();
-    y = ReadJoystickY();
-    printf("Joystick X: %lu, Y: %lu\r\n", x, y);
-    uint32_t x = ReadJoystickX();
-    uint32_t y = ReadJoystickY();
-    printf("Joystick X = %lu, Y = %lu\r\n", x, y);
-    osDelay(500);
+		printf("Joystick X: %lu, Y: %lu\r\n", x, y);
+		if (x > 50) { // Right
+			msg = 'R';
+			osMessageQueuePut(Queue1Handle, &msg, 0, 0);
+		} else if (x < 8) { // Left
+			msg = 'L';
+			osMessageQueuePut(Queue1Handle, &msg, 0, 0);
+		} else { // Neutral
+			msg = 'N';
+			osMessageQueuePut(Queue1Handle, &msg, 0, 0);
+		}
 
-//    // X axis (trái/phải)
-//    if (x > JOYSTICK_X_CENTER + JOYSTICK_DEADZONE) {
-//      msg = 'R';
-//      osMessageQueuePut(Queue1Handle, &msg, 0, 0);
-//    } else if (x < JOYSTICK_X_CENTER - JOYSTICK_DEADZONE) {
-//      msg = 'L';
-//      osMessageQueuePut(Queue1Handle, &msg, 0, 0);
-//    }
-//
-//    // Y axis (lên/xuống)
-//    if (y > JOYSTICK_Y_CENTER + JOYSTICK_DEADZONE) {
-//      msg = 'U';
-//      osMessageQueuePut(Queue3Handle, &msg, 0, 0);
-//    } else if (y < JOYSTICK_Y_CENTER - JOYSTICK_DEADZONE) {
-//      msg = 'D';
-//      osMessageQueuePut(Queue4Handle, &msg, 0, 0);
-//    }
-
-    // 🆕 Đọc nút PA0 để tăng tốc đạn
-//    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
-//      if (enemyBulletSpeed < ENEMY_BULLET_SPEED_MAX - 1) {
-//        enemyBulletSpeed += 2;
-//        printf("Tăng tốc đạn: %d\r\n", enemyBulletSpeed);
-//      }
-//      osDelay(200); // chống giữ nút
-//    }
-
-    osDelay(100);
-  }
+		// ---- Y Axis handling ----
+		if (y > 100) { // Up
+			msg = 'U';
+			osMessageQueuePut(Queue3Handle, &msg, 0, 0);
+		} else if (y < 8) { // Down
+			msg = 'D';
+			osMessageQueuePut(Queue4Handle, &msg, 0, 0);
+		} else { // Neutral
+			msg = 'N';
+			osMessageQueuePut(Queue3Handle, &msg, 0, 0);
+			osMessageQueuePut(Queue4Handle, &msg, 0, 0);
+		}
+		osDelay(100);
+	}
+  /* USER CODE END 5 */
 }
-
 
 /**
   * @brief  Period elapsed callback in non blocking mode
