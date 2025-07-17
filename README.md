@@ -58,9 +58,9 @@ STM32F429I-DISC1.
 
 |STM32F429|Module ngoại vi|
 |--|--|
-|PA0|VRX của Joystick|
-|PA1|VRY củaJoystick|
-|PB0|chân dương còi TMB12A05|
+|PA1|VRX của Joystick|
+|PA2|VRY củaJoystick|
+|PG13|chân dương còi TMB12A05|
 |GND|chân âm còi TMB12A05|
 
 
